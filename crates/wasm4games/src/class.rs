@@ -176,7 +176,7 @@ impl ByteClass {
     /// ```
     #[inline]
     #[must_use]
-    pub fn clamp(self, card: u8) -> ByteClass {
+    pub const fn clamp(self, card: u8) -> ByteClass {
         let hi = card.saturating_sub(1) as u32;
         ByteClass(fix::clamp_u32(self.0 as u32, 0, hi) as u8)
     }

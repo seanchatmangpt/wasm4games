@@ -36,6 +36,13 @@
 //! it is a safe workspace member and builds in CI (unlike the excluded `wasm4games-wasm4pm`
 //! bridge, which pulls external git repos).
 
+// `#![forbid(unsafe_code)]` is intentionally absent: `#[no_mangle]` exports are
+// classified as unsafe by rustc 1.82+ (the lint considers name-mangling bypass
+// a linker-safety risk).  All unsafe here is limited to the four `#[no_mangle]`
+// export declarations; no raw pointers, transmutes, or memory-unsafe constructs
+// are used anywhere in this crate.
+#![warn(missing_docs)]
+
 use wasm4games::corpus;
 use wasm4games::patterns::PATTERN_REGISTRY;
 
@@ -56,6 +63,13 @@ use wasm4games::patterns::PATTERN_REGISTRY;
 #[no_mangle]
 #[must_use]
 pub extern "C" fn w4g_pattern_count() -> u32 {
+    // PATTERN_REGISTRY is a static slice with at most 75 entries; the registry
+    // would need to exceed 4 billion entries for this to truncate — impossible
+    // in practice, but we guard with a debug assertion to catch future growth.
+    debug_assert!(
+        PATTERN_REGISTRY.len() <= u32::MAX as usize,
+        "PATTERN_REGISTRY too large to fit in u32"
+    );
     PATTERN_REGISTRY.len() as u32
 }
 

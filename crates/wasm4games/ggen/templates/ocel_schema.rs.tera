@@ -34,7 +34,10 @@
 /// Derived from the `w4g:touchesObject` predicate in `ggen/schema/patterns.ttl`.
 /// Each edge asserts that the pattern with `pattern_id` emits events of type
 /// `activity` that link to objects of type `object_type`.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+///
+/// All fields are plain `u16` integers, so `Hash` is derived for free and lets
+/// callers collect edges into `HashSet<OcelSchemaEdge>` for O(1) membership tests.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct OcelSchemaEdge {
     /// Pattern id the edge belongs to.
     pub pattern_id: u16,

@@ -21,7 +21,7 @@ proptest = "1.2.0"
 default = []
 alloc = ["bcinr-logic/alloc"]
 std = ["alloc", "bcinr-logic/std"]
-bench = ["dep:criterion", "bcinr-logic/bench"]
+bench = ["dep:criterion"]
 
 [[bench]]
 name = "w4g_bench"

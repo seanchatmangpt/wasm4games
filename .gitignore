@@ -1,3 +1,4 @@
 /target/
 .claude/
 criterion/
+test_const*

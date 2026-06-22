@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["noise_value_sampled"]};

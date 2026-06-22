@@ -58,3 +58,15 @@ required-features = ["std"]
 [[example]]
 name = "world_sim"
 required-features = ["std"]
+
+[[example]]
+name = "space_station"
+required-features = ["std"]
+
+[[example]]
+name = "siege_defense"
+required-features = ["std"]
+
+[[example]]
+name = "dungeon_crawler"
+required-features = ["std"]

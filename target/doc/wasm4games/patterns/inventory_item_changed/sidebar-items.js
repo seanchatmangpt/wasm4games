@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["NO_SLOT"],"fn":["inventory_item_changed"]};

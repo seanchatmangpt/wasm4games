@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["transition_legality_checked"]};

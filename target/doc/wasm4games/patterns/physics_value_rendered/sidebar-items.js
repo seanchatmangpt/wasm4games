@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["physics_value_rendered"]};

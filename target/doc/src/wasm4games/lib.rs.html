@@ -1,0 +1,170 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/wasm4games/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-1ed95124.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="wasm4games" data-themes="" data-resource-suffix="" data-rustdoc-version="1.98.0-nightly (3daae5e42 2026-06-14)" data-channel="nightly" data-search-js="search-fd9372ac.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-fcd733ba.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><h1><div class="sub-heading">wasm4games/</div>lib.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="attr">#![no_std]
+<a href=#2 id=2 data-nosnippet>2</a>#![forbid(unsafe_code)]
+<a href=#3 id=3 data-nosnippet>3</a>#![warn(missing_docs)]
+<a href=#4 id=4 data-nosnippet>4</a>#![warn(clippy::pedantic)]
+<a href=#5 id=5 data-nosnippet>5</a>#![allow(clippy::needless_range_loop)]
+<a href=#6 id=6 data-nosnippet>6</a>#![allow(clippy::module_name_repetitions)]
+<a href=#7 id=7 data-nosnippet>7</a>#![allow(clippy::must_use_candidate)]
+<a href=#8 id=8 data-nosnippet>8</a></span><span class="comment">// Branchless kernels use deliberate integer casts for bit-packing; these pedantic
+<a href=#9 id=9 data-nosnippet>9</a>// lints are suppressed crate-wide because the casts are structurally intentional.
+<a href=#10 id=10 data-nosnippet>10</a></span><span class="attr">#![allow(clippy::cast_possible_truncation)]
+<a href=#11 id=11 data-nosnippet>11</a>#![allow(clippy::cast_possible_wrap)]
+<a href=#12 id=12 data-nosnippet>12</a>#![allow(clippy::cast_sign_loss)]
+<a href=#13 id=13 data-nosnippet>13</a>#![allow(clippy::cast_lossless)]
+<a href=#14 id=14 data-nosnippet>14</a></span><span class="comment">// Short single-letter names (s, i, h) are idiomatic in packed-u64 kernel ABIs.
+<a href=#15 id=15 data-nosnippet>15</a></span><span class="attr">#![allow(clippy::similar_names)]
+<a href=#16 id=16 data-nosnippet>16</a>#![allow(clippy::many_single_char_names)]
+<a href=#17 id=17 data-nosnippet>17</a></span><span class="comment">// Miscellaneous pedantic lints that don't apply to generated kernel code.
+<a href=#18 id=18 data-nosnippet>18</a></span><span class="attr">#![allow(clippy::bool_to_int_with_if)]
+<a href=#19 id=19 data-nosnippet>19</a>#![allow(clippy::decimal_bitwise_operands)]
+<a href=#20 id=20 data-nosnippet>20</a>#![allow(clippy::doc_markdown)]
+<a href=#21 id=21 data-nosnippet>21</a>#![allow(clippy::items_after_statements)]
+<a href=#22 id=22 data-nosnippet>22</a>#![allow(clippy::match_same_arms)]
+<a href=#23 id=23 data-nosnippet>23</a>#![allow(clippy::missing_errors_doc)]
+<a href=#24 id=24 data-nosnippet>24</a>#![allow(clippy::missing_panics_doc)]
+<a href=#25 id=25 data-nosnippet>25</a>#![allow(clippy::no_effect_underscore_binding)]
+<a href=#26 id=26 data-nosnippet>26</a>#![allow(clippy::struct_excessive_bools)]
+<a href=#27 id=27 data-nosnippet>27</a>#![allow(clippy::uninlined_format_args)]
+<a href=#28 id=28 data-nosnippet>28</a>#![allow(clippy::unreadable_literal)]
+<a href=#29 id=29 data-nosnippet>29</a>#![allow(clippy::assertions_on_constants)]
+<a href=#30 id=30 data-nosnippet>30</a>
+<a href=#31 id=31 data-nosnippet>31</a></span><span class="doccomment">//! `wasm4games` — a branchless, `no_std`, engine-agnostic *game-pattern foundry*.
+<a href=#32 id=32 data-nosnippet>32</a>//!
+<a href=#33 id=33 data-nosnippet>33</a>//! Game behaviors (input admission, ticks, collision, combat, status, physics, evidence,
+<a href=#34 id=34 data-nosnippet>34</a>//! promotion) are expressed as **bounded byte-class state** transformed by **branchless
+<a href=#35 id=35 data-nosnippet>35</a>//! kernels** that reuse the verified primitives in [`bcinr_logic`]. Every meaningful
+<a href=#36 id=36 data-nosnippet>36</a>//! transition can emit **object-centric evidence** ([`evidence::ocel`]), **runtime span
+<a href=#37 id=37 data-nosnippet>37</a>//! codes** ([`evidence::otel`]), a **receipt chain** ([`evidence::receipt`]), and a
+<a href=#38 id=38 data-nosnippet>38</a>//! **deterministic replay frame** ([`evidence::replay`]).
+<a href=#39 id=39 data-nosnippet>39</a>//!
+<a href=#40 id=40 data-nosnippet>40</a>//! # Quick Start
+<a href=#41 id=41 data-nosnippet>41</a>//!
+<a href=#42 id=42 data-nosnippet>42</a>//! Call a pattern kernel directly for zero-allocation, branch-free game logic:
+<a href=#43 id=43 data-nosnippet>43</a>//!
+<a href=#44 id=44 data-nosnippet>44</a>//! ```
+<a href=#45 id=45 data-nosnippet>45</a>//! use wasm4games::patterns::damage_applied;
+<a href=#46 id=46 data-nosnippet>46</a>//!
+<a href=#47 id=47 data-nosnippet>47</a>//! // state: bits[0..16] = current HP (200)
+<a href=#48 id=48 data-nosnippet>48</a>//! // input: bits[0..16] = base damage (25), bit[16] = crit flag (0 = no crit)
+<a href=#49 id=49 data-nosnippet>49</a>//! let new_state = damage_applied(200, 25);
+<a href=#50 id=50 data-nosnippet>50</a>//! assert_eq!(new_state, 175);
+<a href=#51 id=51 data-nosnippet>51</a>//!
+<a href=#52 id=52 data-nosnippet>52</a>//! // With a crit (bit 16 set), damage is doubled.
+<a href=#53 id=53 data-nosnippet>53</a>//! let crit_state = damage_applied(200, 25 | (1 &lt;&lt; 16));
+<a href=#54 id=54 data-nosnippet>54</a>//! assert_eq!(crit_state, 150);
+<a href=#55 id=55 data-nosnippet>55</a>//! ```
+<a href=#56 id=56 data-nosnippet>56</a>//!
+<a href=#57 id=57 data-nosnippet>57</a>//! # Pattern Kernels
+<a href=#58 id=58 data-nosnippet>58</a>//!
+<a href=#59 id=59 data-nosnippet>59</a>//! All 75 pattern kernels live in [`patterns`]. Each kernel is a pure function
+<a href=#60 id=60 data-nosnippet>60</a>//! `(state: u64, input: u64) -&gt; u64` using a packed-u64 ABI. The complete catalog
+<a href=#61 id=61 data-nosnippet>61</a>//! is exposed via [`patterns::PATTERN_REGISTRY`] as [`ir::PatternSpec`] data, which
+<a href=#62 id=62 data-nosnippet>62</a>//! allows iteration, self-checking, and portability verification without any runtime
+<a href=#63 id=63 data-nosnippet>63</a>//! reflection.
+<a href=#64 id=64 data-nosnippet>64</a>//!
+<a href=#65 id=65 data-nosnippet>65</a>//! # Evidence Channels
+<a href=#66 id=66 data-nosnippet>66</a>//!
+<a href=#67 id=67 data-nosnippet>67</a>//! Kernels are intentionally free of side effects; evidence is emitted by the caller
+<a href=#68 id=68 data-nosnippet>68</a>//! using the four channels in [`evidence`]:
+<a href=#69 id=69 data-nosnippet>69</a>//!
+<a href=#70 id=70 data-nosnippet>70</a>//! | Module | Purpose |
+<a href=#71 id=71 data-nosnippet>71</a>//! |---|---|
+<a href=#72 id=72 data-nosnippet>72</a>//! | [`evidence::ocel`] | Object-centric event log (OCEL-style) |
+<a href=#73 id=73 data-nosnippet>73</a>//! | [`evidence::otel`] | Runtime span codes |
+<a href=#74 id=74 data-nosnippet>74</a>//! | [`evidence::receipt`] | Deterministic rolling receipt chain |
+<a href=#75 id=75 data-nosnippet>75</a>//! | [`evidence::replay`] | Deterministic replay frames |
+<a href=#76 id=76 data-nosnippet>76</a>//!
+<a href=#77 id=77 data-nosnippet>77</a>//! # No-std Usage
+<a href=#78 id=78 data-nosnippet>78</a>//!
+<a href=#79 id=79 data-nosnippet>79</a>//! The crate is `#![no_std]` by default. Enable the `alloc` feature for growable
+<a href=#80 id=80 data-nosnippet>80</a>//! structures like [`evidence::ocel::OcelLog`]. Enable the `std` feature if you need
+<a href=#81 id=81 data-nosnippet>81</a>//! the full standard library in tests or integration code.
+<a href=#82 id=82 data-nosnippet>82</a>//!
+<a href=#83 id=83 data-nosnippet>83</a>//! ## Doctrine
+<a href=#84 id=84 data-nosnippet>84</a>//!
+<a href=#85 id=85 data-nosnippet>85</a>//! - Engines project worlds; `wasm4games` operates patterns; `wasm4pm` admits evidence.
+<a href=#86 id=86 data-nosnippet>86</a>//! - Kernels are **generated by ggen** from the input surface in `ggen/`; the committed
+<a href=#87 id=87 data-nosnippet>87</a>//!   files under [`patterns`] are the offline source of truth. See the "GGEN-ONLY USER
+<a href=#88 id=88 data-nosnippet>88</a>//!   SURFACE" covenant in the docs.
+<a href=#89 id=89 data-nosnippet>89</a>//! - `wasm4pm` is *referenced, not vendored*: [`compat`] holds dependency-free mirror
+<a href=#90 id=90 data-nosnippet>90</a>//!   types shaped like `wasm4pm-compat`; the real admission bridge lives in the
+<a href=#91 id=91 data-nosnippet>91</a>//!   workspace-excluded `wasm4games-wasm4pm` crate.
+<a href=#92 id=92 data-nosnippet>92</a>
+<a href=#93 id=93 data-nosnippet>93</a></span><span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
+<a href=#94 id=94 data-nosnippet>94</a></span><span class="kw">extern crate </span>alloc;
+<a href=#95 id=95 data-nosnippet>95</a><span class="attr">#[cfg(all(test, feature = <span class="string">"std"</span>))]
+<a href=#96 id=96 data-nosnippet>96</a></span><span class="kw">extern crate </span>std;
+<a href=#97 id=97 data-nosnippet>97</a>
+<a href=#98 id=98 data-nosnippet>98</a><span class="doccomment">/// Byte-class authority: bounded `u8` state alphabets and the admission status vocabulary.
+<a href=#99 id=99 data-nosnippet>99</a></span><span class="kw">pub mod </span>class;
+<a href=#100 id=100 data-nosnippet>100</a>
+<a href=#101 id=101 data-nosnippet>101</a><span class="doccomment">/// Dependency-free mirror types that shadow `wasm4pm-compat` shapes for offline operation.
+<a href=#102 id=102 data-nosnippet>102</a></span><span class="kw">pub mod </span>compat;
+<a href=#103 id=103 data-nosnippet>103</a>
+<a href=#104 id=104 data-nosnippet>104</a><span class="doccomment">/// Golden-vector corpus — the portability oracle binding all 75 pattern kernels.
+<a href=#105 id=105 data-nosnippet>105</a></span><span class="kw">pub mod </span>corpus;
+<a href=#106 id=106 data-nosnippet>106</a>
+<a href=#107 id=107 data-nosnippet>107</a><span class="doccomment">/// Evidence channels: OCEL events, OTEL spans, receipt chains, and replay frames.
+<a href=#108 id=108 data-nosnippet>108</a></span><span class="kw">pub mod </span>evidence;
+<a href=#109 id=109 data-nosnippet>109</a>
+<a href=#110 id=110 data-nosnippet>110</a><span class="doccomment">/// Pattern IR: game patterns expressed as static data.
+<a href=#111 id=111 data-nosnippet>111</a></span><span class="kw">pub mod </span>ir;
+<a href=#112 id=112 data-nosnippet>112</a>
+<a href=#113 id=113 data-nosnippet>113</a><span class="doccomment">/// Generated branchless pattern kernels (75 patterns, ids 1–75).
+<a href=#114 id=114 data-nosnippet>114</a>///
+<a href=#115 id=115 data-nosnippet>115</a>/// All files in this module are produced by `ggen sync` from `ggen/schema/patterns.ttl`.
+<a href=#116 id=116 data-nosnippet>116</a>/// Documentation lints are suppressed here because generated constants are covered by
+<a href=#117 id=117 data-nosnippet>117</a>/// their group-level doc comments in each pattern file.
+<a href=#118 id=118 data-nosnippet>118</a></span><span class="attr">#[allow(missing_docs)]
+<a href=#119 id=119 data-nosnippet>119</a></span><span class="kw">pub mod </span>patterns;
+<a href=#120 id=120 data-nosnippet>120</a>
+<a href=#121 id=121 data-nosnippet>121</a><span class="doccomment">/// Offline admissibility proxy and determinism checks.
+<a href=#122 id=122 data-nosnippet>122</a></span><span class="kw">pub mod </span>verify;
+<a href=#123 id=123 data-nosnippet>123</a>
+<a href=#124 id=124 data-nosnippet>124</a><span class="doccomment">/// Re-export of the marker trait so downstream code uses a single `Branchless` notion.
+<a href=#125 id=125 data-nosnippet>125</a></span><span class="kw">pub use </span>bcinr_logic::Branchless;
+<a href=#126 id=126 data-nosnippet>126</a>
+<a href=#127 id=127 data-nosnippet>127</a><span class="doccomment">/// Total number of branchless pattern kernels in this crate.
+<a href=#128 id=128 data-nosnippet>128</a>///
+<a href=#129 id=129 data-nosnippet>129</a>/// Equivalent to `patterns::PATTERN_REGISTRY.len()` but available as a compile-time
+<a href=#130 id=130 data-nosnippet>130</a>/// constant for downstream assertions, C-ABI headers, and gap-detection audits.
+<a href=#131 id=131 data-nosnippet>131</a></span><span class="kw">pub const </span>KERNEL_COUNT: usize = <span class="number">75</span>;
+<a href=#132 id=132 data-nosnippet>132</a>
+<a href=#133 id=133 data-nosnippet>133</a><span class="doccomment">/// Curated re-exports for ergonomic downstream use.
+<a href=#134 id=134 data-nosnippet>134</a>///
+<a href=#135 id=135 data-nosnippet>135</a>/// Import with `use wasm4games::prelude::*;` to bring the most commonly needed types
+<a href=#136 id=136 data-nosnippet>136</a>/// into scope without spelling out the full module paths.
+<a href=#137 id=137 data-nosnippet>137</a></span><span class="kw">pub mod </span>prelude {
+<a href=#138 id=138 data-nosnippet>138</a>    <span class="doccomment">/// Byte-class and status types for branchless state management.
+<a href=#139 id=139 data-nosnippet>139</a>    </span><span class="kw">pub use </span><span class="kw">crate</span>::class::{status, ByteClass, Status};
+<a href=#140 id=140 data-nosnippet>140</a>
+<a href=#141 id=141 data-nosnippet>141</a>    <span class="doccomment">/// Conformance mirror types for offline wasm4pm mapping.
+<a href=#142 id=142 data-nosnippet>142</a>    </span><span class="kw">pub use </span><span class="kw">crate</span>::compat::{EvidenceState, Verdict};
+<a href=#143 id=143 data-nosnippet>143</a>
+<a href=#144 id=144 data-nosnippet>144</a>    <span class="doccomment">/// Object references and OCEL event type.
+<a href=#145 id=145 data-nosnippet>145</a>    </span><span class="kw">pub use </span><span class="kw">crate</span>::evidence::ocel::{ObjectRefs, OcelEvent};
+<a href=#146 id=146 data-nosnippet>146</a>
+<a href=#147 id=147 data-nosnippet>147</a>    <span class="doccomment">/// OTEL span code type.
+<a href=#148 id=148 data-nosnippet>148</a>    </span><span class="kw">pub use </span><span class="kw">crate</span>::evidence::otel::SpanCode;
+<a href=#149 id=149 data-nosnippet>149</a>
+<a href=#150 id=150 data-nosnippet>150</a>    <span class="doccomment">/// Receipt chain types for deterministic rolling evidence.
+<a href=#151 id=151 data-nosnippet>151</a>    </span><span class="kw">pub use </span><span class="kw">crate</span>::evidence::receipt::{ReceiptChain, ReceiptEnvelope};
+<a href=#152 id=152 data-nosnippet>152</a>
+<a href=#153 id=153 data-nosnippet>153</a>    <span class="doccomment">/// Deterministic replay frame type.
+<a href=#154 id=154 data-nosnippet>154</a>    </span><span class="kw">pub use </span><span class="kw">crate</span>::evidence::replay::ReplayFrame;
+<a href=#155 id=155 data-nosnippet>155</a>
+<a href=#156 id=156 data-nosnippet>156</a>    <span class="doccomment">/// Pattern IR types for registry iteration and cross-referencing.
+<a href=#157 id=157 data-nosnippet>157</a>    </span><span class="kw">pub use </span><span class="kw">crate</span>::ir::{
+<a href=#158 id=158 data-nosnippet>158</a>        AdmissionRule, EventKind, LoweringKind, ObjectKind, PatternId, PatternSpec,
+<a href=#159 id=159 data-nosnippet>159</a>    };
+<a href=#160 id=160 data-nosnippet>160</a>
+<a href=#161 id=161 data-nosnippet>161</a>    <span class="doccomment">/// The static registry of all 75 pattern specs.
+<a href=#162 id=162 data-nosnippet>162</a>    </span><span class="kw">pub use </span><span class="kw">crate</span>::patterns::PATTERN_REGISTRY;
+<a href=#163 id=163 data-nosnippet>163</a>
+<a href=#164 id=164 data-nosnippet>164</a>    <span class="doccomment">/// The `Branchless` marker trait re-exported for downstream use.
+<a href=#165 id=165 data-nosnippet>165</a>    </span><span class="kw">pub use </span><span class="kw">crate</span>::Branchless;
+<a href=#166 id=166 data-nosnippet>166</a>}
+<a href=#167 id=167 data-nosnippet>167</a>
+<a href=#168 id=168 data-nosnippet>168</a><span class="attr">#[cfg(test)]
+<a href=#169 id=169 data-nosnippet>169</a></span><span class="kw">mod </span>chain_tests;
+</code></pre></div></section></main></body></html>

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["narrative_branch_selected"]};

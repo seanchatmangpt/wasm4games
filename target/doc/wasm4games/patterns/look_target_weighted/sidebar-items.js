@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["look_target_weighted"]};

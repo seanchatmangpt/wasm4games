@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["action_mask_applied"]};

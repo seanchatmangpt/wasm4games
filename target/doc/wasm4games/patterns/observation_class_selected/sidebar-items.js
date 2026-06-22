@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["observation_class_selected"]};

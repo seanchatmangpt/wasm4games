@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["fixed_tick_advanced"]};

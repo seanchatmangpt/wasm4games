@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["KERNEL_COUNT"],"mod":["class","compat","corpus","evidence","ir","patterns","prelude","verify"],"trait":["Branchless"]};

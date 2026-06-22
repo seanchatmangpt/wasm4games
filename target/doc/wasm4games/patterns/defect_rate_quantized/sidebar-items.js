@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["defect_rate_quantized"]};

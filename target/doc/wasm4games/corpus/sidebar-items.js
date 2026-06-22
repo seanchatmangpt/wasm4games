@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["GOLDEN_CORPUS_DIGEST","PROBES"],"fn":["assert_corpus_stable","corpus_digest","dispatch","pattern_digest","verify_corpus"]};

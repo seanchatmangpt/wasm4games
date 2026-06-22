@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["movement_legality_checked"]};

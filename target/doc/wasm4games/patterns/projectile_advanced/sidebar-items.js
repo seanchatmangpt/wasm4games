@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["projectile_advanced"]};

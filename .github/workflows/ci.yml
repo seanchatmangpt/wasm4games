@@ -7,8 +7,8 @@ on:
     branches: [main]
 
 env:
-  RUSTFLAGS: "-D warnings"
   CARGO_INCREMENTAL: "0"
+  RUSTFLAGS: "-D warnings"
 
 jobs:
   ci:
@@ -30,12 +30,21 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
-            ${{ runner.os }}-cargo-
+            ${{ runner.os }}-cargo-registry-
+
+      - name: Cache target directory
+        uses: actions/cache@v4
+        with:
+          path: target/
+          key: ${{ runner.os }}-cargo-target-${{ hashFiles('**/Cargo.lock') }}-${{ hashFiles('**/*.rs') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-target-${{ hashFiles('**/Cargo.lock') }}-
+            ${{ runner.os }}-cargo-target-
 
       - name: Install cargo-make
         uses: davidB/rust-cargo-make@v1
@@ -43,20 +52,17 @@ jobs:
       - name: Format check
         run: cargo make fmt
 
-      - name: Check workspace
+      - name: Workspace check
         run: cargo make check
 
       - name: Clippy (-D warnings)
         run: cargo make clippy
 
-      - name: Test workspace
+      - name: Test (workspace)
         run: cargo make test
 
       - name: wasm32 build check
         run: cargo make wasm-check
 
       - name: C-ABI portability proof
-        run: |
-          cargo build --package wasm4games-capi --release
-          # Verify the staticlib artifact exists (C-ABI portability proof)
-          ls -lh target/release/libwasm4games_capi.a
+        run: cargo make portability-proof

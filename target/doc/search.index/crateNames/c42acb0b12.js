@@ -1,0 +1,1 @@
+rd_("jwasm4gamesowasm4games_capi")

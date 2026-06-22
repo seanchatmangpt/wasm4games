@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["quality_gate_evaluated"]};

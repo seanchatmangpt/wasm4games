@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["capability_flag_evaluated"]};

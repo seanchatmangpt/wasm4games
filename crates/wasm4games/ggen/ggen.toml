@@ -133,3 +133,11 @@ query = { file = "queries/chains.rq" }
 template = { file = "templates/chain_test.rs.tera" }
 fanout = "chainName"
 output_pattern = "src/chain_tests/{chainName}.rs"
+
+[[rule]]
+name        = "examples"
+query       = "queries/examples.rq"
+template    = "templates/example.rs.tera"
+output      = "examples/{fileName}.rs"
+description = "Game example files — one per scenario, exercising all 75 patterns"
+groupBy     = "fileName"

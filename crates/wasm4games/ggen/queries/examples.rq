@@ -1,0 +1,16 @@
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX w4g:  <https://wasm4games.dev/ontology/v1#>
+PREFIX ex:   <https://wasm4games.dev/examples/v1#>
+
+SELECT ?fileName ?title ?description ?patternId ?patternName
+WHERE {
+  ?example ex:fileName ?fileName ;
+           ex:title ?title ;
+           ex:description ?description ;
+           ex:usesPattern ?patternId .
+  ?pattern w4g:id ?patternId ;
+           w4g:name ?patternName .
+}
+ORDER BY ?fileName ?patternId

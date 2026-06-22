@@ -1,0 +1,241 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix w4g:  <https://wasm4games.dev/ontology/v1#> .
+@prefix ex:   <https://wasm4games.dev/examples/v1#> .
+
+# ---------------------------------------------------------------------------
+# Example 1: CombatSim — patterns 1-14
+# ---------------------------------------------------------------------------
+ex:CombatSim
+    a w4g:Example ;
+    ex:fileName        "combat_sim" ;
+    ex:title           "Combat Simulation" ;
+    ex:description     "A deterministic combat loop exercising input handling, entity lifecycle, collision detection, physics, AI decision-making, and damage resolution with full OCEL/OTel evidence capture." ;
+    ex:usesPattern     "1"^^xsd:integer ,
+                       "2"^^xsd:integer ,
+                       "3"^^xsd:integer ,
+                       "4"^^xsd:integer ,
+                       "5"^^xsd:integer ,
+                       "6"^^xsd:integer ,
+                       "7"^^xsd:integer ,
+                       "8"^^xsd:integer ,
+                       "9"^^xsd:integer ,
+                       "10"^^xsd:integer ,
+                       "11"^^xsd:integer ,
+                       "12"^^xsd:integer ,
+                       "13"^^xsd:integer ,
+                       "14"^^xsd:integer .
+
+# ---------------------------------------------------------------------------
+# Example 2: WorldSim — patterns 15-25
+# ---------------------------------------------------------------------------
+ex:WorldSim
+    a w4g:Example ;
+    ex:fileName        "world_sim" ;
+    ex:title           "World Simulation" ;
+    ex:description     "An open-world simulation covering player status, inventory management, quest tracking, mastery progression, NPC satisfaction scoring, and pathfinding through waypoint graphs with heuristic cost evaluation." ;
+    ex:usesPattern     "15"^^xsd:integer ,
+                       "16"^^xsd:integer ,
+                       "17"^^xsd:integer ,
+                       "18"^^xsd:integer ,
+                       "19"^^xsd:integer ,
+                       "20"^^xsd:integer ,
+                       "21"^^xsd:integer ,
+                       "22"^^xsd:integer ,
+                       "23"^^xsd:integer ,
+                       "24"^^xsd:integer ,
+                       "25"^^xsd:integer .
+
+# ---------------------------------------------------------------------------
+# Example 3: NarrativeCamera — patterns 26-40
+# ---------------------------------------------------------------------------
+ex:NarrativeCamera
+    a w4g:Example ;
+    ex:fileName        "narrative_camera" ;
+    ex:title           "Narrative & Camera System" ;
+    ex:description     "Combines procedural terrain generation with noise and biome weighting, a full economy layer (currency, XP, level gating, purchases, rewards), and a branching dialogue system with cooldown and weighted player choices." ;
+    ex:usesPattern     "26"^^xsd:integer ,
+                       "27"^^xsd:integer ,
+                       "28"^^xsd:integer ,
+                       "29"^^xsd:integer ,
+                       "30"^^xsd:integer ,
+                       "31"^^xsd:integer ,
+                       "32"^^xsd:integer ,
+                       "33"^^xsd:integer ,
+                       "34"^^xsd:integer ,
+                       "35"^^xsd:integer ,
+                       "36"^^xsd:integer ,
+                       "37"^^xsd:integer ,
+                       "38"^^xsd:integer ,
+                       "39"^^xsd:integer ,
+                       "40"^^xsd:integer .
+
+# ---------------------------------------------------------------------------
+# Example 4: Multiplayer — patterns 41-55
+# ---------------------------------------------------------------------------
+ex:Multiplayer
+    a w4g:Example ;
+    ex:fileName        "multiplayer" ;
+    ex:title           "Multiplayer Networking" ;
+    ex:description     "Demonstrates camera rig control (distance, look-target, FOV, shake, follow), spatial audio pipeline (priority, volume, fade, triggers, distance attenuation), and network synchronisation with lag compensation, packet management, client-side prediction, and authoritative state sync." ;
+    ex:usesPattern     "41"^^xsd:integer ,
+                       "42"^^xsd:integer ,
+                       "43"^^xsd:integer ,
+                       "44"^^xsd:integer ,
+                       "45"^^xsd:integer ,
+                       "46"^^xsd:integer ,
+                       "47"^^xsd:integer ,
+                       "48"^^xsd:integer ,
+                       "49"^^xsd:integer ,
+                       "50"^^xsd:integer ,
+                       "51"^^xsd:integer ,
+                       "52"^^xsd:integer ,
+                       "53"^^xsd:integer ,
+                       "54"^^xsd:integer ,
+                       "55"^^xsd:integer .
+
+# ---------------------------------------------------------------------------
+# Example 5: AiAnticheat — patterns 56-75
+# ---------------------------------------------------------------------------
+ex:AiAnticheat
+    a w4g:Example ;
+    ex:fileName        "ai_anticheat" ;
+    ex:title           "AI & Anti-Cheat Engine" ;
+    ex:description     "Integrates DfLSS quality metrics (sigma, defects, CTQ, NPS, quality gates) with the engine bridge adapter layer and a reinforcement-learning agent loop (reward signal, policy, observations, action masks, episodes) backed by legality validators for movement, resources, cooldowns, action rates, and state transitions." ;
+    ex:usesPattern     "56"^^xsd:integer ,
+                       "57"^^xsd:integer ,
+                       "58"^^xsd:integer ,
+                       "59"^^xsd:integer ,
+                       "60"^^xsd:integer ,
+                       "61"^^xsd:integer ,
+                       "62"^^xsd:integer ,
+                       "63"^^xsd:integer ,
+                       "64"^^xsd:integer ,
+                       "65"^^xsd:integer ,
+                       "66"^^xsd:integer ,
+                       "67"^^xsd:integer ,
+                       "68"^^xsd:integer ,
+                       "69"^^xsd:integer ,
+                       "70"^^xsd:integer ,
+                       "71"^^xsd:integer ,
+                       "72"^^xsd:integer ,
+                       "73"^^xsd:integer ,
+                       "74"^^xsd:integer ,
+                       "75"^^xsd:integer .
+
+# ---------------------------------------------------------------------------
+# Example 6: FullGameLoop — patterns 1-75 (all)
+# ---------------------------------------------------------------------------
+ex:FullGameLoop
+    a w4g:Example ;
+    ex:fileName        "full_game_loop" ;
+    ex:title           "Full Game Loop" ;
+    ex:description     "An end-to-end integration example that exercises every w4g pattern from input handling through entity management, world simulation, narrative, camera, audio, networking, AI, anti-cheat, and quality verification in a single cohesive game loop." ;
+    ex:usesPattern     "1"^^xsd:integer ,
+                       "2"^^xsd:integer ,
+                       "3"^^xsd:integer ,
+                       "4"^^xsd:integer ,
+                       "5"^^xsd:integer ,
+                       "6"^^xsd:integer ,
+                       "7"^^xsd:integer ,
+                       "8"^^xsd:integer ,
+                       "9"^^xsd:integer ,
+                       "10"^^xsd:integer ,
+                       "11"^^xsd:integer ,
+                       "12"^^xsd:integer ,
+                       "13"^^xsd:integer ,
+                       "14"^^xsd:integer ,
+                       "15"^^xsd:integer ,
+                       "16"^^xsd:integer ,
+                       "17"^^xsd:integer ,
+                       "18"^^xsd:integer ,
+                       "19"^^xsd:integer ,
+                       "20"^^xsd:integer ,
+                       "21"^^xsd:integer ,
+                       "22"^^xsd:integer ,
+                       "23"^^xsd:integer ,
+                       "24"^^xsd:integer ,
+                       "25"^^xsd:integer ,
+                       "26"^^xsd:integer ,
+                       "27"^^xsd:integer ,
+                       "28"^^xsd:integer ,
+                       "29"^^xsd:integer ,
+                       "30"^^xsd:integer ,
+                       "31"^^xsd:integer ,
+                       "32"^^xsd:integer ,
+                       "33"^^xsd:integer ,
+                       "34"^^xsd:integer ,
+                       "35"^^xsd:integer ,
+                       "36"^^xsd:integer ,
+                       "37"^^xsd:integer ,
+                       "38"^^xsd:integer ,
+                       "39"^^xsd:integer ,
+                       "40"^^xsd:integer ,
+                       "41"^^xsd:integer ,
+                       "42"^^xsd:integer ,
+                       "43"^^xsd:integer ,
+                       "44"^^xsd:integer ,
+                       "45"^^xsd:integer ,
+                       "46"^^xsd:integer ,
+                       "47"^^xsd:integer ,
+                       "48"^^xsd:integer ,
+                       "49"^^xsd:integer ,
+                       "50"^^xsd:integer ,
+                       "51"^^xsd:integer ,
+                       "52"^^xsd:integer ,
+                       "53"^^xsd:integer ,
+                       "54"^^xsd:integer ,
+                       "55"^^xsd:integer ,
+                       "56"^^xsd:integer ,
+                       "57"^^xsd:integer ,
+                       "58"^^xsd:integer ,
+                       "59"^^xsd:integer ,
+                       "60"^^xsd:integer ,
+                       "61"^^xsd:integer ,
+                       "62"^^xsd:integer ,
+                       "63"^^xsd:integer ,
+                       "64"^^xsd:integer ,
+                       "65"^^xsd:integer ,
+                       "66"^^xsd:integer ,
+                       "67"^^xsd:integer ,
+                       "68"^^xsd:integer ,
+                       "69"^^xsd:integer ,
+                       "70"^^xsd:integer ,
+                       "71"^^xsd:integer ,
+                       "72"^^xsd:integer ,
+                       "73"^^xsd:integer ,
+                       "74"^^xsd:integer ,
+                       "75"^^xsd:integer .
+
+# ---------------------------------------------------------------------------
+# Example 7: EvidenceChain — patterns 6,7,8,9
+# ---------------------------------------------------------------------------
+ex:EvidenceChain
+    a w4g:Example ;
+    ex:fileName        "evidence_chain" ;
+    ex:title           "Evidence Chain" ;
+    ex:description     "A focused deep-dive into the four evidence patterns — OCEL event log construction, OTel trace emission, deterministic replay, and receipt generation — demonstrating tamper-evident provenance for game events." ;
+    ex:usesPattern     "6"^^xsd:integer ,
+                       "7"^^xsd:integer ,
+                       "8"^^xsd:integer ,
+                       "9"^^xsd:integer .
+
+# ---------------------------------------------------------------------------
+# Example 8: QualityEngine — patterns 56-65
+# ---------------------------------------------------------------------------
+ex:QualityEngine
+    a w4g:Example ;
+    ex:fileName        "quality_engine" ;
+    ex:title           "Quality Engine" ;
+    ex:description     "Exercises the DfLSS quality subsystem and engine bridge layer — sigma level tracking, defect counting, CTQ parameter management, NPS scoring, quality gate enforcement, command opcodes, capability declarations, bridge state machine, payload encoding, and adapter wiring." ;
+    ex:usesPattern     "56"^^xsd:integer ,
+                       "57"^^xsd:integer ,
+                       "58"^^xsd:integer ,
+                       "59"^^xsd:integer ,
+                       "60"^^xsd:integer ,
+                       "61"^^xsd:integer ,
+                       "62"^^xsd:integer ,
+                       "63"^^xsd:integer ,
+                       "64"^^xsd:integer ,
+                       "65"^^xsd:integer .

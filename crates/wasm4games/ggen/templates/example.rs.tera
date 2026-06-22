@@ -1,0 +1,33 @@
+//! # {{ title }}
+//!
+//! {{ description }}
+//!
+//! Patterns covered:
+{% for pattern in patterns %}//!   - `{{ pattern.patternId }}` — {{ pattern.patternName }}
+{% endfor %}
+
+use wasm4games::patterns::*;
+use wasm4games::evidence::{Receipt, rolling_xor};
+
+fn main() {
+    let mut state: u64 = 0x0001_0000;
+    let input: u64 = 0x0000_0041;
+    let mut receipt: u64 = 0;
+    let mut count: usize = 0;
+
+{% for pattern in patterns %}
+    // Pattern {{ pattern.patternId }}: {{ pattern.patternName }}
+    state = {{ pattern.patternName }}(state, input);
+    receipt = rolling_xor(receipt, state);
+    println!(
+        "  [{{ pattern.patternId }}] {{ pattern.patternName }} => state=0x{:016X}  receipt=0x{:016X}",
+        state, receipt
+    );
+    count += 1;
+{% endfor %}
+
+    println!(
+        "example: {{ title }} | patterns: {} | final_state: 0x{:016X}",
+        count, state
+    );
+}

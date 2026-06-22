@@ -26,3 +26,35 @@ bench = ["dep:criterion", "bcinr-logic/bench"]
 [[bench]]
 name = "w4g_bench"
 harness = false
+
+[[example]]
+name = "ai_anticheat"
+required-features = ["std"]
+
+[[example]]
+name = "camera_audio"
+required-features = ["std"]
+
+[[example]]
+name = "combat_sim"
+required-features = ["std"]
+
+[[example]]
+name = "full_game_loop"
+required-features = ["std"]
+
+[[example]]
+name = "multiplayer"
+required-features = ["std"]
+
+[[example]]
+name = "narrative_camera"
+required-features = ["std"]
+
+[[example]]
+name = "quality_engine"
+required-features = ["std"]
+
+[[example]]
+name = "world_sim"
+required-features = ["std"]

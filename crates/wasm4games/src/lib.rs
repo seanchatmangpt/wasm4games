@@ -124,6 +124,12 @@ pub mod verify;
 /// Re-export of the marker trait so downstream code uses a single `Branchless` notion.
 pub use bcinr_logic::Branchless;
 
+/// Total number of branchless pattern kernels in this crate.
+///
+/// Equivalent to `patterns::PATTERN_REGISTRY.len()` but available as a compile-time
+/// constant for downstream assertions, C-ABI headers, and gap-detection audits.
+pub const KERNEL_COUNT: usize = 75;
+
 /// Curated re-exports for ergonomic downstream use.
 ///
 /// Import with `use wasm4games::prelude::*;` to bring the most commonly needed types

@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Three MUD game examples demonstrating all 75 branchless pattern kernels in narrative game contexts:
+  - `dungeon_crawler` — roguelike dungeon crawler; exercises 75/75 patterns, emits receipt chain
+  - `space_station` — sci-fi space station defense; exercises 75/75 patterns, anti-cheat PASS, quality gate PASS
+  - `siege_defense` — castle siege battle log; exercises all patterns across 8-link receipt chain
+
 ## [26.6.13] - 2026-06-13
 
 ### Added

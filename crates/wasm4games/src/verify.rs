@@ -48,7 +48,7 @@ impl ValidationReport {
     /// `true` when all checks in this report passed.
     #[inline]
     #[must_use]
-    pub fn is_ok(&self) -> bool {
+    pub const fn is_ok(&self) -> bool {
         self.required_status_in_bounds
             && self.refusal_status_in_bounds
             && self.negative_fixture_status_correct
@@ -76,9 +76,12 @@ pub fn validate_pattern(spec: &PatternSpec) -> ValidationReport {
 /// Check that an observed status code is within the known vocabulary.
 ///
 /// Returns `true` if `observed < `[`crate::class::status::COUNT`].
+///
+/// The `_spec` parameter is reserved for future per-pattern vocabulary extensions
+/// and is intentionally unused by the current global-vocabulary check.
 #[inline]
 #[must_use = "offline validation result — ignoring may miss conformance failures"]
-pub fn check_status_bounds(_spec: &PatternSpec, observed: u8) -> bool {
+pub const fn check_status_bounds(_spec: &PatternSpec, observed: u8) -> bool {
     observed < status::COUNT
 }
 
@@ -95,10 +98,18 @@ pub fn replay_digest(frames: &[ReplayFrame]) -> u64 {
     r.finalize()
 }
 
-/// Check that replaying the same frames reproduces the same digest (determinism).
+/// Check that replaying the same frames twice produces identical digests (determinism).
 ///
-/// A `false` return would indicate a non-deterministic implementation, which violates
-/// the core replay-evidence contract.
+/// Calls [`replay_digest`] twice on the same slice and compares the results.
+/// Because [`replay_digest`] is a pure function with no shared mutable state, this
+/// comparison exercises the implementation's determinism contract end-to-end:
+/// two independent receipt sessions folding the same sequence must agree.
+///
+/// A `false` return would indicate that the underlying
+/// [`DeterministicSubstrateReceipt`] is non-deterministic, violating the
+/// core replay-evidence contract.
+///
+/// [`DeterministicSubstrateReceipt`]: bcinr_logic::patterns::integrity_receipt::DeterministicSubstrateReceipt
 #[must_use = "offline validation result — ignoring may miss conformance failures"]
 pub fn check_replay_determinism(frames: &[ReplayFrame]) -> bool {
     replay_digest(frames) == replay_digest(frames)

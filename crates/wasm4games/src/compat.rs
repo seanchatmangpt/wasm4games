@@ -15,7 +15,7 @@ use core::fmt;
 /// Represents the lifecycle of a piece of evidence, mapping onto the
 /// [`crate::class::status`] lattice. The ordering matches the lattice: later variants
 /// carry higher status codes and dominate a worst-of join.
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub enum EvidenceState {
     /// Observed but unprocessed.
     Raw,
@@ -67,7 +67,7 @@ impl fmt::Display for EvidenceState {
 /// Represents the outcome of an offline admissibility check. Note that this is **not**
 /// the admission authority — the external `wasm4pm` service performs real admission.
 /// This type is used for local pre-screening and test fixture construction only.
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub enum Verdict {
     /// Admitted under the active scope.
     Admitted,

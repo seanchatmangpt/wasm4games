@@ -1,0 +1,26 @@
+{
+  "version": "1.0.0",
+  "created_at": "2026-06-23T06:31:30.158059420+00:00",
+  "ontology": {
+    "hash": "a2da88673118c477a701fd7bc96ef285fd98ba5c0a2c57a1b33d273d331b4a94",
+    "timestamp": "2026-06-23T06:31:30.158056401+00:00",
+    "size_bytes": 60110
+  },
+  "manifest": {
+    "hash": "93362d017a9da91d766754ffbc94b88ab3c6de323f7cc7cf0addd045123716fb",
+    "timestamp": "2026-06-23T06:31:30.158056401+00:00",
+    "size_bytes": 4369
+  },
+  "inference_rules": {
+    "infer-anti-cheat-flag": "b3c72d81ca6c5c3b4328936f039e05b18178ee03d08e59310868a8b23c722fc1"
+  },
+  "imports": {
+    "ggen/schema/chains.ttl": {
+      "hash": "9f3340d29fad69eea88341473071a43abdba77d5b7ab310077941148ef7add46",
+      "timestamp": "2026-06-23T06:31:30.158056401+00:00",
+      "size_bytes": 26172
+    }
+  },
+  "files_synced": 141,
+  "sync_duration_ms": 125
+}

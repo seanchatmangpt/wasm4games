@@ -80,7 +80,7 @@ impl ReceiptChain {
     /// Wraps on `u32::MAX` overflow (> 4 billion events per chain).
     #[inline]
     #[must_use = "returns the event count; ignoring it is likely a bug"]
-    pub fn count(&self) -> u32 {
+    pub const fn count(&self) -> u32 {
         self.count
     }
 

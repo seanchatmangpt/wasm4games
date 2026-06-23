@@ -128,6 +128,7 @@ pub fn dispatch(pattern_id: u16, state: u64, input: u64) -> u64 {
 }
 
 /// Fold one pattern's IR + evidence shape + probe outputs into the receipt.
+#[inline]
 fn fold_pattern(r: &mut DeterministicSubstrateReceipt, spec: &PatternSpec) {
     r.record(
         spec.id.0 as u64,

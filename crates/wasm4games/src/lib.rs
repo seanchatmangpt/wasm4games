@@ -7,10 +7,13 @@
 #![allow(clippy::must_use_candidate)]
 // Branchless kernels use deliberate integer casts for bit-packing; these pedantic
 // lints are suppressed crate-wide because the casts are structurally intentional.
+// `unnecessary_cast` covers ggen-generated same-type casts used for readability in
+// branchless boundary classifiers (e.g., `command_opcode_encoded`).
 #![allow(clippy::cast_possible_truncation)]
 #![allow(clippy::cast_possible_wrap)]
 #![allow(clippy::cast_sign_loss)]
 #![allow(clippy::cast_lossless)]
+#![allow(clippy::unnecessary_cast)]
 // Short single-letter names (s, i, h) are idiomatic in packed-u64 kernel ABIs.
 #![allow(clippy::similar_names)]
 #![allow(clippy::many_single_char_names)]

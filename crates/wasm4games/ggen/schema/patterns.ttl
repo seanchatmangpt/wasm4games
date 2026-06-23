@@ -53,6 +53,12 @@ w4g:touchesObject a rdf:Property ; rdfs:domain w4g:Pattern ; rdfs:range w4g:Obje
 # pattern. Mirrors the `Authority:` doc line / `_reference` oracle in the kernel.
 w4g:authority     a rdf:Property ; rdfs:domain w4g:Pattern ; rdfs:range xsd:string .
 
+# --- Output-lane bitmask ---------------------------------------------------
+# w4g:xorMask is the bitwise lane mask for the mutant_3 XOR counterfactual in
+# the generated kernel test.  Omitting it from an individual defaults to
+# 0xFFFF (16-bit lane) in the kernel.rs.tera template.
+w4g:xorMask       a rdf:Property ; rdfs:domain w4g:Pattern ; rdfs:range xsd:string .
+
 # --- Fixture-corpus slots ---------------------------------------------------
 # Two-sided breed corpus, declared in the ontology so the admit/refuse battery is
 # part of the model (rendered into the kernel `#[cfg(test)]` block). Each value is
@@ -277,8 +283,8 @@ w4g:receipt_appended a w4g:Pattern ;
 w4g:physics_value_rendered a w4g:Pattern ;
     w4g:id 10 ;
     w4g:name "physics_value_rendered" ;
-    w4g:lowering w4g:Saturating ;
-    w4g:stateCard 32 ;
+    w4g:lowering w4g:Lut ;
+    w4g:stateCard 8 ;
     w4g:eventCode 48 ;
     w4g:eventName "PhysicsValueRendered" ;
     w4g:otelSpan 48 ;
@@ -781,8 +787,8 @@ w4g:narrative_branch_selected a w4g:Pattern ;
 w4g:dialogue_cooldown_bounded a w4g:Pattern ;
     w4g:id 39 ;
     w4g:name "dialogue_cooldown_bounded" ;
-    w4g:lowering w4g:Lut ;
-    w4g:stateCard 8 ;
+    w4g:lowering w4g:Mask ;
+    w4g:stateCard 2 ;
     w4g:eventCode 101 ;
     w4g:eventName "DialogueCooldownBounded" ;
     w4g:otelSpan 101 ;
@@ -798,8 +804,8 @@ w4g:dialogue_cooldown_bounded a w4g:Pattern ;
 w4g:choice_weight_selected a w4g:Pattern ;
     w4g:id 40 ;
     w4g:name "choice_weight_selected" ;
-    w4g:lowering w4g:Lut ;
-    w4g:stateCard 8 ;
+    w4g:lowering w4g:Mask ;
+    w4g:stateCard 2 ;
     w4g:eventCode 102 ;
     w4g:eventName "ChoiceWeightSelected" ;
     w4g:otelSpan 102 ;
@@ -1013,7 +1019,7 @@ w4g:lag_compensation_applied a w4g:Pattern ;
     w4g:otelSpan 114 ;
     w4g:requiredStatus 4 ;
     w4g:refusalStatus 7 ;
-    w4g:primitive "bcinr_logic::fix::clamp_u32" ;
+    w4g:primitive "bcinr_logic::int::saturating_sub_i64" ;
     w4g:doc "Rewind a server-authoritative position by lag*velocity to estimate where the client was at a past tick." ;
     w4g:authority "oracle predicate: matches lag_compensation_applied_reference for all inputs" ;
     w4g:touchesObject w4g:obj_peer ;
@@ -1077,8 +1083,8 @@ w4g:sync_state_admitted a w4g:Pattern ;
 w4g:sigma_level_computed a w4g:Pattern ;
     w4g:id 56 ;
     w4g:name "sigma_level_computed" ;
-    w4g:lowering w4g:Lut ;
-    w4g:stateCard 7 ;
+    w4g:lowering w4g:Mask ;
+    w4g:stateCard 2 ;
     w4g:eventCode 118 ;
     w4g:eventName "SigmaLevelComputed" ;
     w4g:otelSpan 118 ;
@@ -1162,8 +1168,8 @@ w4g:quality_gate_evaluated a w4g:Pattern ;
 w4g:command_opcode_encoded a w4g:Pattern ;
     w4g:id 61 ;
     w4g:name "command_opcode_encoded" ;
-    w4g:lowering w4g:Lut ;
-    w4g:stateCard 4 ;
+    w4g:lowering w4g:Mask ;
+    w4g:stateCard 2 ;
     w4g:eventCode 123 ;
     w4g:eventName "CommandOpcodeEncoded" ;
     w4g:otelSpan 123 ;
@@ -1211,8 +1217,8 @@ w4g:bridge_state_transitioned a w4g:Pattern ;
 w4g:payload_size_bounded a w4g:Pattern ;
     w4g:id 64 ;
     w4g:name "payload_size_bounded" ;
-    w4g:lowering w4g:Lut ;
-    w4g:stateCard 8 ;
+    w4g:lowering w4g:Mask ;
+    w4g:stateCard 2 ;
     w4g:eventCode 126 ;
     w4g:eventName "PayloadSizeBounded" ;
     w4g:otelSpan 126 ;
@@ -1247,8 +1253,8 @@ w4g:adapter_priority_ranked a w4g:Pattern ;
 w4g:reward_signal_clamped a w4g:Pattern ;
     w4g:id 66 ;
     w4g:name "reward_signal_clamped" ;
-    w4g:lowering w4g:Lut ;
-    w4g:stateCard 8 ;
+    w4g:lowering w4g:Saturating ;
+    w4g:stateCard 32 ;
     w4g:eventCode 128 ;
     w4g:eventName "RewardSignalClamped" ;
     w4g:otelSpan 128 ;
@@ -1295,7 +1301,7 @@ w4g:observation_class_selected a w4g:Pattern ;
 w4g:action_mask_applied a w4g:Pattern ;
     w4g:id 69 ;
     w4g:name "action_mask_applied" ;
-    w4g:lowering w4g:Bitset ;
+    w4g:lowering w4g:Mask ;
     w4g:stateCard 32 ;
     w4g:eventCode 131 ;
     w4g:eventName "ActionMaskApplied" ;
@@ -1427,7 +1433,7 @@ w4g:transition_legality_checked a w4g:Pattern ;
     w4g:id 75 ;
     w4g:name "transition_legality_checked" ;
     w4g:lowering w4g:Dfa ;
-    w4g:stateCard 2 ;
+    w4g:stateCard 5 ;
     w4g:eventCode 137 ;
     w4g:eventName "TransitionLegalityChecked" ;
     w4g:otelSpan 137 ;

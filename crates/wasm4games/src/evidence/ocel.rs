@@ -84,7 +84,7 @@ impl ObjectRefs {
     /// Number of live references.
     #[inline]
     #[must_use = "returns the count of live object references"]
-    pub fn len(&self) -> usize {
+    pub const fn len(&self) -> usize {
         self.len as usize
     }
 
@@ -94,7 +94,7 @@ impl ObjectRefs {
     /// (an event that cannot be traced back to any real object).
     #[inline]
     #[must_use = "returns true if there are no object references; check this before trusting the event"]
-    pub fn is_empty(&self) -> bool {
+    pub const fn is_empty(&self) -> bool {
         self.len == 0
     }
 }
@@ -200,7 +200,7 @@ impl OcelEvent {
     /// Equal to [`Self::HEADER_BYTES`] + `self.objects.len()` × [`Self::OBJECT_BYTES`].
     #[inline]
     #[must_use = "returns the exact byte count needed for write_to; use it to pre-size your buffer"]
-    pub fn encoded_len(&self) -> usize {
+    pub const fn encoded_len(&self) -> usize {
         Self::HEADER_BYTES + self.objects.len() * Self::OBJECT_BYTES
     }
 
@@ -335,10 +335,10 @@ pub struct OcelLog {
 impl OcelLog {
     /// An empty log.
     ///
-    /// Identical to [`Default::default`]; provided for discoverability.
+    /// Identical to [`Default::default`]; provided as `const fn` for use in `const` contexts.
     #[inline]
     #[must_use = "returns an empty OcelLog; bind it to a variable"]
-    pub fn new() -> Self {
+    pub const fn new() -> Self {
         Self {
             events: alloc::vec::Vec::new(),
         }

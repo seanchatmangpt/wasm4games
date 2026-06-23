@@ -2,6 +2,10 @@
 # module declarations, kernel re-exports, and the PATTERN_REGISTRY entries. Object kinds are
 # aggregated into parallel comma-joined lists (codes and names) so the template can emit the
 # `&[ObjectKind { code, name }]` slices. ORDER BY ?id for stable output.
+#
+# NOTE: w4g:touchesObject is fetched via OPTIONAL so that any future pattern that temporarily
+# lacks an object binding still appears in the output (with empty objectCodes/objectNames lists)
+# rather than being silently excluded. The template must guard against empty aggregates.
 
 PREFIX w4g: <https://wasm4games.dev/ontology#>
 
@@ -19,11 +23,13 @@ WHERE {
         w4g:eventName     ?eventName ;
         w4g:otelSpan      ?otelSpan ;
         w4g:requiredStatus ?requiredStatus ;
-        w4g:refusalStatus ?refusalStatus ;
-        w4g:touchesObject ?obj .
+        w4g:refusalStatus ?refusalStatus .
     ?loweringNode w4g:name ?lowering .
-    ?obj w4g:code ?objCode ;
-         w4g:name ?objName .
+    OPTIONAL {
+        ?pattern w4g:touchesObject ?obj .
+        ?obj w4g:code ?objCode ;
+             w4g:name ?objName .
+    }
 }
 GROUP BY ?id ?name ?lowering ?stateCard ?eventCode ?eventName ?otelSpan
          ?requiredStatus ?refusalStatus

@@ -33,9 +33,6 @@ checksum = "f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53"
 name = "bcinr-logic"
 version = "26.6.13"
 source = "git+https://github.com/seanchatmangpt/bcinr#56acd71159ff82b84c4b6c0d7037e7f6d5dd5b02"
-dependencies = [
- "criterion",
-]
 
 [[package]]
 name = "bit-set"

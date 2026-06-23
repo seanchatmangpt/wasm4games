@@ -53,6 +53,12 @@ w4g:touchesObject a rdf:Property ; rdfs:domain w4g:Pattern ; rdfs:range w4g:Obje
 # pattern. Mirrors the `Authority:` doc line / `_reference` oracle in the kernel.
 w4g:authority     a rdf:Property ; rdfs:domain w4g:Pattern ; rdfs:range xsd:string .
 
+# --- Output-lane bitmask ---------------------------------------------------
+# w4g:xorMask is the bitwise lane mask for the mutant_3 XOR counterfactual in
+# the generated kernel test.  Omitting it from an individual defaults to
+# 0xFFFF (16-bit lane) in the kernel.rs.tera template.
+w4g:xorMask       a rdf:Property ; rdfs:domain w4g:Pattern ; rdfs:range xsd:string .
+
 # --- Fixture-corpus slots ---------------------------------------------------
 # Two-sided breed corpus, declared in the ontology so the admit/refuse battery is
 # part of the model (rendered into the kernel `#[cfg(test)]` block). Each value is

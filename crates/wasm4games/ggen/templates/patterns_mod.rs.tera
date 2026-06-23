@@ -69,11 +69,15 @@ pub static PATTERN_REGISTRY: &[PatternSpec] = &[
         state_card: {{ row.stateCard }},
         event: EventKind { code: {{ row.eventCode }}, name: "{{ row.eventName }}" },
         objects: &[
-        {%- set codes = row.objectCodes | split(pat=",") -%}
-        {%- set names = row.objectNames | split(pat=",") -%}
+        {%- set raw_codes = row.objectCodes | default(value="") -%}
+        {%- set raw_names = row.objectNames | default(value="") -%}
+        {%- if raw_codes != "" -%}
+        {%- set codes = raw_codes | split(pat=",") -%}
+        {%- set names = raw_names | split(pat=",") -%}
         {%- for code in codes %}
             ObjectKind { code: {{ code | trim }}, name: "{{ names[loop.index0] | trim }}" },
         {%- endfor %}
+        {%- endif %}
         ],
         admission: STD_ADMISSION,
         otel_span: {{ row.otelSpan }},

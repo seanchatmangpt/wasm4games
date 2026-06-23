@@ -2,3 +2,5 @@
 .claude/
 criterion/
 test_const*
+# ggen runtime artifacts (cache, keys, receipts — not source)
+.ggen/

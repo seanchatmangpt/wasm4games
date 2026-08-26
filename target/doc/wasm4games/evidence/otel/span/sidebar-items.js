@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"constant":["INPUT_ADMIT","RECEIPT_APPEND","TICK"]};

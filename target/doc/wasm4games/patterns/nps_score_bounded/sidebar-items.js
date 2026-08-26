@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["nps_score_bounded"]};

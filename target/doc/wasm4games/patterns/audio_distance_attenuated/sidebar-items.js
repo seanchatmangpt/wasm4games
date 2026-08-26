@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["audio_distance_attenuated"]};

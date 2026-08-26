@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["camera_follow_lerped"]};

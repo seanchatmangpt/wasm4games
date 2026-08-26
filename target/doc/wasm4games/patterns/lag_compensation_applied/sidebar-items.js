@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["lag_compensation_applied"]};

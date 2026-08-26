@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"constant":["ADD","CART","CHECKOUT","CONFIRM","FAIL","FAILED","IDLE","PAID","PAY","REMOVE"],"fn":["purchase_admitted"]};

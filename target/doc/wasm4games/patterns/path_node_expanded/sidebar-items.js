@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["path_node_expanded"]};

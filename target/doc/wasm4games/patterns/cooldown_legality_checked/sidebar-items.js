@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["cooldown_legality_checked"]};

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["command_opcode_encoded"]};

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["LoweringKind"],"struct":["AdmissionRule","EventKind","ObjectKind","PatternId","PatternSpec"]};

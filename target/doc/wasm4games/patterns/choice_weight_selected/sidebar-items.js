@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["choice_weight_selected"]};

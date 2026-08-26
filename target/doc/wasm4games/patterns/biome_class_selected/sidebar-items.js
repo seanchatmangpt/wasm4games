@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["biome_class_selected"]};

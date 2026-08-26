@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["action_rate_bounded"]};

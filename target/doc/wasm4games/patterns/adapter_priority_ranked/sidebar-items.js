@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["adapter_priority_ranked"]};

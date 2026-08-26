@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["bridge_state_transitioned"]};

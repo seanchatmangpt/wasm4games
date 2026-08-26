@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["sigma_level_computed"]};

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["dialogue_node_advanced"]};

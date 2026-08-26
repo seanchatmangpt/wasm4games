@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"constant":["ADMITTED","BLOCKED","COUNT","PARTIAL","PENDING","PROJECTED","RECEIPTED","REFUSED","RESIDUAL","UNKNOWN"],"fn":["is_valid","name"]};

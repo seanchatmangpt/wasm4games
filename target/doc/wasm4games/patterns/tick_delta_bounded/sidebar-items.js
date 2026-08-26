@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["tick_delta_bounded"]};

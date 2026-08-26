@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["w4g_corpus_digest","w4g_golden_corpus_digest","w4g_kernel","w4g_pattern_count"]};

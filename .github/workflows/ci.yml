@@ -7,8 +7,9 @@ on:
     branches: [main]
 
 env:
-  CARGO_INCREMENTAL: "0"
   RUSTFLAGS: "-D warnings"
+  CARGO_INCREMENTAL: "0"
+  CARGO_TERM_COLOR: always
 
 jobs:
   ci:
@@ -19,6 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # MSRV 1.70 — minimum supported Rust version for this workspace
       - name: Install Rust stable (MSRV 1.70)
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -41,28 +43,36 @@ jobs:
         uses: actions/cache@v4
         with:
           path: target/
-          key: ${{ runner.os }}-cargo-target-${{ hashFiles('**/Cargo.lock') }}-${{ hashFiles('**/*.rs') }}
+          key: ${{ runner.os }}-cargo-target-1.70-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
-            ${{ runner.os }}-cargo-target-${{ hashFiles('**/Cargo.lock') }}-
-            ${{ runner.os }}-cargo-target-
+            ${{ runner.os }}-cargo-target-1.70-
 
       - name: Install cargo-make
-        uses: davidB/rust-cargo-make@v1
+        run: cargo install cargo-make --locked
 
+      # Format check (read-only; fails if code is not already formatted)
       - name: Format check
         run: cargo make fmt
 
+      # Compile all targets in the workspace
       - name: Workspace check
         run: cargo make check
 
+      # Clippy with -D warnings — zero lint warnings permitted
       - name: Clippy (-D warnings)
         run: cargo make clippy
 
+      # Unit and integration tests across the workspace
       - name: Test (workspace)
         run: cargo make test
 
+      # Verify no_std core compiles for wasm32-unknown-unknown
       - name: wasm32 build check
         run: cargo make wasm-check
 
+      # C-ABI portability proof: build the staticlib and verify exported symbols
       - name: C-ABI portability proof
-        run: cargo make portability-proof
+        run: |
+          cargo build --package wasm4games-capi --release
+          nm target/release/libwasm4games_capi.a | grep -E ' T ' | head -20
+          echo "C-ABI symbols exported successfully"

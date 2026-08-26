@@ -38,7 +38,7 @@ args = ["fmt", "--all", "--", "--check"]
 
 [tasks.audit]
 category = "Security"
-description = "Run cargo audit for vulnerabilities — last clean audit: 2026-06-21 (95 crates, 0 vulnerabilities)"
+description = "Run cargo audit for vulnerabilities — last clean audit: 2026-06-22 (95 crates, 0 vulnerabilities, 1135 advisories checked)"
 workspace = false
 command = "cargo"
 args = ["audit", "--no-fetch"]

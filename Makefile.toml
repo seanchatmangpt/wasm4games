@@ -68,6 +68,13 @@ description = "Compile the wasm4games alloc-free core to wasm32 (requires the ta
 workspace = false
 dependencies = ["wasm-build"]
 
+[tasks.wasm-verify]
+category = "Verification"
+description = "Build wasm32 (core + C-ABI cdylib) and execute the corpus-digest proof under wasmtime when available (skips honestly to build-only otherwise)"
+workspace = false
+command = "bash"
+args = ["scripts/wasm32_verify.sh"]
+
 [tasks.ggen-sync]
 category = "Codegen"
 description = "Regenerate wasm4games kernels via ggen, then format (developer-only; requires ggen)"
@@ -107,7 +114,7 @@ args = ["test", "-p", "wasm4games", "--features", "std"]
 [tasks.ci]
 category = "CI"
 description = "Comprehensive CI pipeline"
-dependencies = ["fmt", "check", "clippy", "test", "wasm-check", "portability-proof"]
+dependencies = ["fmt", "check", "clippy", "test", "wasm-check", "wasm-verify", "portability-proof"]
 
 [tasks.default]
 alias = "ci"

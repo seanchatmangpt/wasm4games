@@ -37,7 +37,10 @@ cargo make wasm-check   # Compiles wasm4games --no-default-features to wasm32
 ```
 
 The `wasm32-unknown-unknown` target must be installed (`rustup target add wasm32-unknown-unknown`).
-Execution is unverified without a wasm runtime; `wasm-check` only confirms it compiles.
+Execution-level verification exists: `cargo make wasm-verify` (or
+`bash scripts/wasm32_verify.sh`) builds the C-ABI cdylib to wasm32 and executes the
+corpus-digest proof under `wasmtime` when installed, failing on digest divergence; without
+a runtime it degrades honestly to build-only verification.
 
 ## Unsafe Code Policy
 

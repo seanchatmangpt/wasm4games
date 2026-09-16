@@ -19,7 +19,7 @@ you regenerate kernels, you never hand-edit them.
 | `cargo check` | ✅ |
 | `cargo clippy -D warnings` | ✅ |
 | `cargo test` (554 tests) | ✅ |
-| `wasm32` build | ✅ |
+| `wasm32` build + executed digest | ✅ |
 | C-ABI portability | ✅ |
 
 ## Quick Start
@@ -43,9 +43,11 @@ cargo build -p wasm4games --target wasm32-unknown-unknown --no-default-features
 - **wasm4games-wasm4pm bridge:** Excluded from the workspace (`crates/wasm4games-wasm4pm`);
   it requires network access and pinned git revisions before use. The in-crate `verify`
   module is an offline proxy only, not the authority.
-- **wasm32 execution:** The wasm32 target builds cleanly but execution requires a WASM
-  runtime (wasmtime, wasmer, or a browser). The workspace only verifies the build; the
-  corpus digest is not verified under wasm32 execution.
+- **wasm32 execution:** the wasm32 target builds cleanly, and `bash scripts/wasm32_verify.sh`
+  (`cargo make wasm-verify`) **executes** the corpus-digest proof under `wasmtime` when it is
+  installed — the wasm32-executed digest must equal the native Rust golden (verified
+  2026-09-16, wasmtime 48.0.1: 75 patterns, digests equal). Environments without a wasm
+  runtime still get honest build-only verification (`RESULT: SKIPPED_NO_RUNTIME`).
 
 ## Workspace
 

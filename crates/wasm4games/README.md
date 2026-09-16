@@ -77,7 +77,8 @@ cargo test -p wasm4games --features std
 # Lint — warnings are errors
 cargo clippy -p wasm4games --all-targets --features std,bench -- -D warnings
 
-# wasm32 target (browser / WASM-4 fantasy console) — UNVERIFIED for the corpus digest
+# wasm32 target (browser / WASM-4 fantasy console) — digest proof EXECUTED via the C-ABI
+# cdylib under wasmtime: bash scripts/wasm32_verify.sh
 cargo build -p wasm4games --target wasm32-unknown-unknown --no-default-features
 ```
 

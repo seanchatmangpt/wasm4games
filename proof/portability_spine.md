@@ -8,7 +8,7 @@
 wasm4games                = VERIFIED_UNDER_SCOPE
 portability (Rust native) = VERIFIED  — golden corpus oracle pinned
 portability (C ABI)       = VERIFIED  — cc-linked staticlib reproduces the golden, executed
-portability (wasm32)      = VERIFIED (build) — target compiles clean; execution requires a wasm runtime
+portability (wasm32)      = VERIFIED (build + executed digest) — wasmtime run of the C-ABI cdylib reproduces the golden
 portability (formatting)  = VERIFIED — cargo fmt --check passes
 portability (engines/Lua) = NOT_STARTED
 bcinr workspace crown     = BLOCKED_BY_PRE_EXISTING_CONTRACT_GATE_RESIDUAL  (unchanged)
@@ -42,7 +42,7 @@ lock), and every other projection target must reproduce it to claim portability.
 |---|---|---|
 | Rust native | `cargo test -p wasm4games --features std corpus` | `corpus_digest == GOLDEN` ✅ VERIFIED |
 | C ABI (executed) | `crates/wasm4games-capi` staticlib + `harness.c` linked with `cc` | digest reproduced ✅ VERIFIED |
-| wasm32 (build only) | `cargo build -p wasm4games --target wasm32-unknown-unknown --no-default-features` | `EXIT=0` ✅ VERIFIED (build); execution unverified (no runtime) |
+| wasm32 (build + executed) | `bash scripts/wasm32_verify.sh` — cdylib built to wasm32, `w4g_corpus_digest` invoked under wasmtime | digests equal ✅ VERIFIED (2026-09-16, wasmtime 48.0.1, 75 patterns) |
 | formatting | `cargo fmt --check` | `EXIT=0` ✅ VERIFIED |
 
 C-ABI proof output (`bash crates/wasm4games-capi/portability_proof.sh`). The harness reads the
@@ -66,13 +66,9 @@ on the `no_std` `wasm4games` core), so it is a safe workspace member and builds 
 
 ## Fenced legs (cannot execute here)
 
-Environment probe: `cc`/`gcc`/`clang` present, `node` present; **`wasm32-unknown-unknown`
-target NOT installed**; `wasmtime`/`wasmer` ABSENT.
+Environment probe (2026-06-21): `cc`/`gcc`/`clang` present, `node` present; **`wasm32-unknown-unknown`
+target NOT installed**; `wasmtime`/`wasmer` ABSENT. *(Superseded 2026-09-16 — see Updates.)*
 
-- **wasm32:** `VERIFIED (build)`. The crate is `no_std` + dependency-free and builds clean to
-  `wasm32-unknown-unknown` (`cargo build -p wasm4games --target wasm32-unknown-unknown --no-default-features`
-  exits 0, verified 2026-06-21). No wasm runtime is available to *execute* and compare the digest,
-  so execution-level portability remains unverified. Build-level portability is confirmed green.
 - **Engine adapters (UE5/Unity/Godot/Bevy) and Lua/Luau:** `NOT_STARTED`. These need their
   respective toolchains/engines and belong to the platform-projection roadmap (`ROADMAP.md`).
 
@@ -80,14 +76,31 @@ target NOT installed**; `wasmtime`/`wasmer` ABSENT.
 
 The user's crown benchmark is `<all registry patterns> × {Rust, WASM, C, …} × engines → same
 I/O/refusal/OCEL/OTel/receipt/replay` (the registry currently holds 75 patterns). Discharged
-so far: **2 targets (Rust native, C), fully executed and matching** over the whole registry via
-the single corpus digest. Remaining (WASM execution, engine adapters, Lua) require an
-environment with those runtimes; they are recorded here as UNVERIFIED / NOT_STARTED, not
-laundered into a pass.
+so far: **3 targets (Rust native, C, wasm32-executed)** — the first two fully executed and
+matching over the whole registry via the single corpus digest since 2026-06-21; the wasm32
+leg executed 2026-09-16 (see Updates). Remaining (engine adapters, Lua) require an
+environment with those runtimes; they are recorded here as NOT_STARTED, not laundered into
+a pass.
 
 ## Reproduce
 
 ```bash
 cargo test -p wasm4games --features std corpus      # native oracle
 bash crates/wasm4games-capi/portability_proof.sh    # C-ABI cross-language execution
+bash scripts/wasm32_verify.sh                       # wasm32 executed digest proof (needs wasmtime)
 ```
+
+## Updates (2026-09-16)
+
+- **wasm32 execution leg discharged.** The environment changed since the 2026-06-21 fence:
+  `wasm32-unknown-unknown` is installed and `wasmtime` 48.0.1 is present
+  (`/opt/homebrew/bin/wasmtime`). `wasm4games-capi` now also builds as a `cdylib`, and
+  `scripts/wasm32_verify.sh` (cargo-make task `wasm-verify`, wired into `ci`) invokes
+  `w4g_pattern_count` / `w4g_corpus_digest` / `w4g_golden_corpus_digest` on the wasm32
+  cdylib under wasmtime and fails non-zero on divergence. Observed: `pattern_count = 75`,
+  `corpus_digest == golden_digest == 360768312735987904`, `RESULT: VERIFIED`, `EXIT=0`.
+  Without wasmtime the script degrades honestly to build-only
+  (`RESULT: SKIPPED_NO_RUNTIME`); it never launders a build into an execution pass.
+- **Falsifier count:** the cross-language receipt is now one ggen-declared pattern law →
+  Rust rlib (tests) + C-linked staticlib (executed) + wasm32 cdylib (executed) — three
+  projections, byte-identical corpus digests.

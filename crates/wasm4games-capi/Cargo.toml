@@ -10,7 +10,12 @@ readme = "README.md"
 publish = false
 
 [lib]
-crate-type = ["lib", "staticlib"]
+# - `lib`: in-workspace rlib (unit tests below use it).
+# - `staticlib`: the executed C portability proof (portability_proof.sh) links this archive.
+# - `cdylib`: emits `wasm4games_capi.wasm` for the wasm32 target so
+#   `scripts/wasm32_verify.sh` can EXECUTE the corpus-digest proof under a wasm runtime
+#   (wasmtime) instead of verifying the wasm32 leg at build level only.
+crate-type = ["lib", "staticlib", "cdylib"]
 
 [dependencies]
 # Offline-pure: only the no_std wasm4games core (no git/network deps), so this is safe
